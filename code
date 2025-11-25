@@ -9,9 +9,9 @@
 // GLOBALS for loops to reduce clutter
 int i, j;
 
-// -----------------------------
-// Load dictionary from words.txt
-// -----------------------------
+
+// Loading dictionary from words.txt
+
 int load_words(char words[][6]) {
     FILE *file = fopen("words.txt", "r");
     if (file == NULL) {
@@ -29,9 +29,9 @@ int load_words(char words[][6]) {
     return count;
 }
 
-// -----------------------------
-// Check if guess exists in list
-// -----------------------------
+
+// Checking if guess exists in list
+
 int is_valid_word(char guess[], char words[][6], int total_words) {
     for (i = 0; i < total_words; i++) {
         if (strcmp(guess, words[i]) == 0)
@@ -40,9 +40,9 @@ int is_valid_word(char guess[], char words[][6], int total_words) {
     return 0;
 }
 
-// -----------------------------
-// Generate Wordle-style hint tags
-// -----------------------------
+
+// Generating Wordle-style hint tags
+
 void display_feedback(char guess[], char solution[], char output[]) {
     for (i = 0; i < WORD_LENGTH; i++) {
         if (guess[i] == solution[i]) {
@@ -63,9 +63,9 @@ void display_feedback(char guess[], char solution[], char output[]) {
     }
 }
 
-// -----------------------------
+
 // MAIN GAME
-// -----------------------------
+
 int main() {
 
     char words[MAX_WORDS][6];
@@ -75,14 +75,14 @@ int main() {
         return 0;
     }
 
-    srand(time(NULL));  
+    srand(time(NULL));  // This is required to give random seed each time for the rand function so the chosen word is always random
     char solution[6];
     strcpy(solution, words[rand() % total_words]);   // RANDOM WORD
 
     char wordle[6][5];  // stores what appears in the grid
     char guess[6];
     char marks[6];
-    int again = 0, valid_length, attempt;
+    int again = 0, attempt;
 
     printf("Welcome to WORDLE!");
     printf("\n\n====== HOW TO PLAY ======");
@@ -97,14 +97,14 @@ int main() {
 
     while (again == 1) {
 
-        // Clear grid
+        // clearing grid
         for (i = 0; i < 6; i++)
             for (j = 0; j < 5; j++)
                 wordle[i][j] = '_';
 
         printf("\n====== GAME STARTED ======\n");
 
-        // show empty grid
+        // showing empty grid
         for (i = 0; i < 6; i++) {
             printf("      ");
             for (j = 0; j < 5; j++)
@@ -124,20 +124,20 @@ int main() {
                 scanf("%s", guess);
             }
 
-            // enforce English word
+            // enforce english word
             while (!is_valid_word(guess, words, total_words)) {
                 printf("Not a valid English word. Try again: ");
                 scanf("%s", guess);
             }
 
-            // feedback
+            // give feedback
             display_feedback(guess, solution, marks);
 
             // update grid with guess letters
             for (j = 0; j < 5; j++)
                 wordle[attempt][j] = guess[j];
 
-            // show grid
+            // show grid with progress
             printf("\nYour progress:\n\n");
             for (i = 0; i < 6; i++) {
                 printf("      ");
@@ -157,7 +157,7 @@ int main() {
                 printf("\n");
             }
 
-            // check win
+            // check for win
             if (strcmp(guess, solution) == 0) {
                 printf("\nCongratulations! You guessed the word: %s\n", solution);
                 break;
